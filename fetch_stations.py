@@ -39,11 +39,11 @@ def fetch():
         if lat is None or lon is None:
             continue
 
-        # Extract socket types
+        # Extract socket types (only direct "socket:<type>" keys, not sub-keys like "socket:schuko:voltage")
         socket_types = []
         for key, val in tags.items():
-            if key.startswith("socket:"):
-                socket_types.append(key.replace("socket:", ""))
+            if key.startswith("socket:") and key.count(":") == 1:
+                socket_types.append(key.split(":")[1])
 
         # If no explicit socket tags, check for general plug info
         if not socket_types and tags.get("bicycle:plug"):
